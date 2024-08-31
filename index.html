@@ -5,7 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zalome</title>
     <style>
-        /* Ваш существующий CSS */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0a0f14;
+            color: #c5c8c6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1b1f23;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.2);
+            border: 1px solid #0ff;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 1px solid #0ff;
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #0ff;
+        }
+
+        .info, .description, .downloads, .games, .theme-toggle {
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #0ff;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .info p, .description p, .downloads p, .games p {
+            margin: 10px 0;
+        }
+
+        .button-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            color: #0ff;
+            background-color: #1b1f23;
+            border: 2px solid #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .button:hover {
+            background-color: #0ff;
+            color: #1b1f23;
+        }
+
+        .preview-button {
+            padding: 5px 15px;
+            color: #1b1f23;
+            background-color: #0ff;
+            border: 2px solid #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .preview-button:hover {
+            background-color: #00ff9f;
+            color: #0a0f14;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .modal-content, .close {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        body.light-mode {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        body.light-mode .container {
+            background-color: #ffffff;
+            border: 1px solid #ff00ff;
+            box-shadow: 0px 0px 15px rgba(255, 0, 255, 0.2);
+        }
+
+        body.light-mode header {
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        body.light-mode h1, body.light-mode h2, body.light-mode .button, body.light-mode .preview-button {
+            color: #ff00ff;
+        }
+
+        body.light-mode .button {
+            background-color: #ffffff;
+            border: 2px solid #ff00ff;
+        }
+
+        body.light-mode .button:hover {
+            background-color: #ff00ff;
+            color: #ffffff;
+        }
+
+        body.light-mode .preview-button {
+            background-color: #ff00ff;
+            border: 2px solid #ff00ff;
+            color: #ffffff;
+        }
+
+        body.light-mode .preview-button:hover {
+            background-color: #ff99ff;
+            color: #0a0f14;
+        }
     </style>
 </head>
 <body>
