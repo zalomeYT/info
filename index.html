@@ -1,247 +1,723 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zalome</title>
+    <title>DONTHACKME - Hacker Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #0a0f14;
-            color: #c5c8c6;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background: #000;
+            color: #00ff00;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
         }
 
         .container {
-            max-width: 800px;
-            margin: 50px auto;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            background-color: #1b1f23;
-            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.2);
-            border: 1px solid #0ff;
+            position: relative;
+            z-index: 1;
         }
 
-        header {
+        /* Header Styles */
+        .profile-header {
             text-align: center;
-            border-bottom: 1px solid #0ff;
-            padding-bottom: 20px;
+            margin-bottom: 40px;
+            padding: 40px 0;
         }
 
-        header h1 {
-            font-size: 2.5em;
-            color: #0ff;
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
-        .info, .description, .downloads, .games, .theme-toggle {
-            margin-top: 20px;
-        }
-
-        h2 {
-            color: #0ff;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-
-        .info p, .description p, .downloads p, .games p {
-            margin: 10px 0;
-        }
-
-        .button-container {
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border: 3px solid #00ff00;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(0,255,0,0.1) 0%, rgba(0,0,0,0.8) 70%);
+            box-shadow: 0 0 30px #00ff00;
+            animation: pulse-border 2s infinite;
         }
 
-        .button {
-            padding: 10px 20px;
-            color: #0ff;
-            background-color: #1b1f23;
-            border: 2px solid #0ff;
-            text-decoration: none;
+        .hacker-symbol {
+            font-size: 48px;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            font-size: 4rem;
             font-weight: bold;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            margin-right: 10px;
-            flex-shrink: 0;
+            text-transform: uppercase;
+            position: relative;
+            color: #00ff00;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px #00ff00;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
         }
 
-        .button:hover {
-            background-color: #0ff;
-            color: #1b1f23;
-        }
-
-        .preview-button {
-            padding: 5px 15px;
-            color: #1b1f23;
-            background-color: #0ff;
-            border: 2px solid #0ff;
-            text-decoration: none;
-            font-weight: bold;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .preview-button:hover {
-            background-color: #00ff9f;
-            color: #0a0f14;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 100px;
-            left: 0;
+        .glitch:before,
+        .glitch:after {
+            content: attr(data-text);
+            position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9);
         }
 
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
+        .glitch:before {
+            animation: glitch-anim 0.5s infinite linear alternate-reverse;
+            color: #ff0000;
+            z-index: -1;
         }
 
-        .modal-content, .close {
-            animation-name: zoom;
-            animation-duration: 0.6s;
+        .glitch:after {
+            animation: glitch-anim2 1s infinite linear alternate-reverse;
+            color: #0000ff;
+            z-index: -2;
         }
 
-        @keyframes zoom {
-            from {transform: scale(0)}
-            to {transform: scale(1)}
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00ff00;
+            opacity: 0.8;
+            margin-top: 10px;
+            letter-spacing: 2px;
         }
 
-        .close {
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .info-card:before {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .info-card:hover:before {
+            left: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .card-header h3 {
+            color: #00ff00;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .card-content {
+            font-size: 1.2rem;
+            color: #00ff00;
+        }
+
+        .about-card {
+            grid-column: 1 / -1;
+        }
+
+        .typing-text {
+            animation: typing 2s steps(20, end), blink-caret 0.75s step-end infinite;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #00ff00;
+        }
+
+        /* Matrix Container */
+        #matrix-container {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+        }
+
+        /* Terminal */
+        .terminal-section {
+            margin-bottom: 40px;
+        }
+
+        .terminal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .terminal-header {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .close { background: #ff5f56; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #27ca3f; }
+
+        .terminal-title {
+            color: #00ff00;
+            font-size: 0.9rem;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .terminal-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt {
+            color: #00ff00;
+            margin-right: 5px;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        /* Footer */
+        .profile-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #00ff00;
+        }
+
+        .warning-message {
+            color: #ff0000;
             font-weight: bold;
-            transition: 0.3s;
+            letter-spacing: 2px;
+            animation: warning-flash 2s infinite;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #bbb;
-            text-decoration: none;
-            cursor: pointer;
+        .warning-icon {
+            margin-right: 10px;
         }
 
-        body.light-mode {
-            background-color: #f4f4f4;
-            color: #333;
+        /* Animations */
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 30px #00ff00; }
+            50% { box-shadow: 0 0 50px #00ff00, 0 0 70px #00ff00; }
+            100% { box-shadow: 0 0 30px #00ff00; }
         }
 
-        body.light-mode .container {
-            background-color: #ffffff;
-            border: 1px solid #ff00ff;
-            box-shadow: 0px 0px 15px rgba(255, 0, 255, 0.2);
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
-        body.light-mode header {
-            border-bottom: 1px solid #ff00ff;
+        @keyframes glitch-skew {
+            2%, 64% { transform: skew(0deg); }
+            4%, 60% { transform: skew(-2deg); }
+            62% { transform: skew(0deg); }
         }
 
-        body.light-mode h1, body.light-mode h2, body.light-mode .button, body.light-mode .preview-button {
-            color: #ff00ff;
+        @keyframes glitch-anim {
+            0% { clip: rect(64px, 9999px, 66px, 0); }
+            5% { clip: rect(30px, 9999px, 36px, 0); }
+            10% { clip: rect(87px, 9999px, 94px, 0); }
+            15% { clip: rect(10px, 9999px, 18px, 0); }
+            20% { clip: rect(54px, 9999px, 62px, 0); }
+            25% { clip: rect(75px, 9999px, 80px, 0); }
+            30% { clip: rect(25px, 9999px, 32px, 0); }
+            35% { clip: rect(68px, 9999px, 75px, 0); }
+            40% { clip: rect(40px, 9999px, 48px, 0); }
+            45% { clip: rect(15px, 9999px, 22px, 0); }
+            50% { clip: rect(82px, 9999px, 90px, 0); }
+            55% { clip: rect(35px, 9999px, 42px, 0); }
+            60% { clip: rect(58px, 9999px, 65px, 0); }
+            65% { clip: rect(20px, 9999px, 28px, 0); }
+            70% { clip: rect(72px, 9999px, 80px, 0); }
+            75% { clip: rect(45px, 9999px, 52px, 0); }
+            80% { clip: rect(12px, 9999px, 20px, 0); }
+            85% { clip: rect(65px, 9999px, 72px, 0); }
+            90% { clip: rect(38px, 9999px, 45px, 0); }
+            95% { clip: rect(8px, 9999px, 15px, 0); }
+            100% { clip: rect(78px, 9999px, 85px, 0); }
         }
 
-        body.light-mode .button {
-            background-color: #ffffff;
-            border: 2px solid #ff00ff;
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(25px, 9999px, 32px, 0); }
+            10% { clip: rect(85px, 9999px, 92px, 0); }
+            15% { clip: rect(15px, 9999px, 22px, 0); }
+            20% { clip: rect(55px, 9999px, 62px, 0); }
+            25% { clip: rect(75px, 9999px, 82px, 0); }
+            30% { clip: rect(35px, 9999px, 42px, 0); }
+            35% { clip: rect(5px, 9999px, 12px, 0); }
+            40% { clip: rect(95px, 9999px, 100px, 0); }
+            45% { clip: rect(45px, 9999px, 52px, 0); }
+            50% { clip: rect(18px, 9999px, 25px, 0); }
+            55% { clip: rect(88px, 9999px, 95px, 0); }
+            60% { clip: rect(28px, 9999px, 35px, 0); }
+            65% { clip: rect(68px, 9999px, 75px, 0); }
+            70% { clip: rect(8px, 9999px, 15px, 0); }
+            75% { clip: rect(48px, 9999px, 55px, 0); }
+            80% { clip: rect(78px, 9999px, 85px, 0); }
+            85% { clip: rect(38px, 9999px, 45px, 0); }
+            90% { clip: rect(58px, 9999px, 65px, 0); }
+            95% { clip: rect(98px, 9999px, 100px, 0); }
+            100% { clip: rect(22px, 9999px, 29px, 0); }
         }
 
-        body.light-mode .button:hover {
-            background-color: #ff00ff;
-            color: #ffffff;
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
-        body.light-mode .preview-button {
-            background-color: #ff00ff;
-            border: 2px solid #ff00ff;
-            color: #ffffff;
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff00; }
         }
 
-        body.light-mode .preview-button:hover {
-            background-color: #ff99ff;
-            color: #0a0f14;
+        @keyframes warning-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glitch {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="matrix-bg"></div>
+    
     <div class="container">
-        <header>
-            <h1>Zalome</h1>
-            <p>Настоящее имя: Виталий Лабрагонов Алексеевич</p>
+        <header class="profile-header">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <div class="hacker-symbol">⚡</div>
+                </div>
+                <div class="status-indicator"></div>
+            </div>
+            <h1 class="glitch" data-text="DONTHACKME">DONTHACKME</h1>
+            <p class="subtitle">Elite Cyber Specialist</p>
         </header>
 
-        <div class="theme-toggle button-container">
-            <button class="button" onclick="toggleTheme()">Переключить тему</button>
-        </div>
+        <main class="profile-content">
+            <section class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <span class="icon">👤</span>
+                        <h3>ПСЕВДОНИМ</h3>
+                    </div>
+                    <div class="card-content">
+                        <span class="typing-text">DONTHACKME</span>
+                    </div>
+                </div>
 
-        <section class="info">
-            <h2>Информация</h2>
-            <p><strong>Возраст:</strong> 16 лет</p>
-            <p><strong>Место жительства:</strong> Краснодар</п>
-            <p><strong>Хобби:</strong> Программирование, Робототехника, Разработчик</p>
-        </section>
-        
-        <section class="description">
-            <h2>Обо мне</h2>
-            <p>Я обычный подросток, который учится в институте. Моё любимое дело — изучать разные операционные системы, писать весёлые программы для поднятия настроения, программировать физику и рисовать графику в играх.</p>
-        </section>
-        
-        <section class="downloads">
-            <h2>Мои программы</h2>
-            <div class="button-container">
-                <a href="https://zalomeyt.github.io/downloadseller/" class="button" target="_blank">Симулятор кассира</a>
-                <button class="preview-button" onclick="openModal('кассир.png')">Посмотреть превью</button>
-            </div>
-            <div class="button-container">
-                <a href="https://zalomeyt.github.io/downloadteacher/" class="button" target="_blank">Симулятор училки</a>
-                <button class="preview-button" onclick="openModal('училка.png')">Посмотреть превью</button>
-            </div>
-        </section>
+                <div class="info-card">
+                    <div class="card-header">
+                        <span class="icon">🎂</span>
+                        <h3>ВОЗРАСТ</h3>
+                    </div>
+                    <div class="card-content">
+                        <span class="typing-text">int random</span>
+                    </div>
+                </div>
 
-        <section class="games">
-            <h2>Мой Канал</h2>
-            <div class="button-container">
-                <a href="https://www.youtube.com/@zaIome" class="button">Zalome</a>
-                <!-- Здесь можно добавить кнопку для превью или другую информацию об игре -->
-            </div>
-        </section>
-    </div>
+                <div class="info-card">
+                    <div class="card-header">
+                        <span class="icon">⚧</span>
+                        <h3>ПОЛ</h3>
+                    </div>
+                    <div class="card-content">
+                        <span class="typing-text">Hackerman</span>
+                    </div>
+                </div>
 
-    <div id="myModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="img01">
+                <div class="info-card about-card">
+                    <div class="card-header">
+                        <span class="icon">🧠</span>
+                        <h3>О СЕБЕ</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="matrix-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="terminal-section">
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="btn close"></span>
+                            <span class="btn minimize"></span>
+                            <span class="btn maximize"></span>
+                        </div>
+                        <span class="terminal-title">root@donthackme:~$</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div id="terminal-output"></div>
+                        <div class="terminal-input">
+                            <span class="prompt">root@donthackme:~$ </span>
+                            <span class="cursor">█</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="profile-footer">
+            <div class="warning-message">
+                <span class="warning-icon">⚠️</span>
+                UNAUTHORIZED ACCESS PROHIBITED
+            </div>
+        </footer>
     </div>
 
     <script>
-        function openModal(src) {
-            document.getElementById('img01').src = src;
-            document.getElementById('myModal').style.display = "block";
+        // Matrix Rain Effect
+        class MatrixRain {
+            constructor(containerId) {
+                this.container = document.getElementById(containerId);
+                this.canvas = document.createElement('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.container.appendChild(this.canvas);
+                
+                this.resize();
+                this.init();
+                
+                window.addEventListener('resize', () => this.resize());
+            }
+            
+            resize() {
+                this.canvas.width = this.container.offsetWidth;
+                this.canvas.height = this.container.offsetHeight;
+                this.columns = Math.floor(this.canvas.width / 20);
+                this.drops = new Array(this.columns).fill(1);
+            }
+            
+            init() {
+                this.chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?";
+                this.animate();
+            }
+            
+            animate() {
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.fillStyle = '#00ff00';
+                this.ctx.font = '15px Courier Prime';
+                
+                for (let i = 0; i < this.drops.length; i++) {
+                    const text = this.chars[Math.floor(Math.random() * this.chars.length)];
+                    this.ctx.fillText(text, i * 20, this.drops[i] * 20);
+                    
+                    if (this.drops[i] * 20 > this.canvas.height && Math.random() > 0.975) {
+                        this.drops[i] = 0;
+                    }
+                    this.drops[i]++;
+                }
+                
+                setTimeout(() => this.animate(), 50);
+            }
         }
 
-        function closeModal() {
-            document.getElementById('myModal').style.display = "none";
+        // Background Matrix Effect
+        class BackgroundMatrix {
+            constructor() {
+                this.container = document.getElementById('matrix-bg');
+                this.canvas = document.createElement('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.container.appendChild(this.canvas);
+                
+                this.resize();
+                this.init();
+                
+                window.addEventListener('resize', () => this.resize());
+            }
+            
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.columns = Math.floor(this.canvas.width / 15);
+                this.drops = new Array(this.columns).fill(1);
+            }
+            
+            init() {
+                this.chars = "01";
+                this.animate();
+            }
+            
+            animate() {
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.fillStyle = '#00ff00';
+                this.ctx.font = '12px Courier Prime';
+                
+                for (let i = 0; i < this.drops.length; i++) {
+                    const text = this.chars[Math.floor(Math.random() * this.chars.length)];
+                    this.ctx.fillText(text, i * 15, this.drops[i] * 15);
+                    
+                    if (this.drops[i] * 15 > this.canvas.height && Math.random() > 0.98) {
+                        this.drops[i] = 0;
+                    }
+                    this.drops[i]++;
+                }
+                
+                setTimeout(() => this.animate(), 100);
+            }
         }
 
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
+        // Terminal Animation
+        class Terminal {
+            constructor() {
+                this.output = document.getElementById('terminal-output');
+                this.commands = [
+                    'Initializing secure connection...',
+                    'Scanning network protocols...',
+                    'Bypassing firewall...',
+                    'Access granted to DONTHACKME profile',
+                    'Loading encrypted data...',
+                    'Decryption complete',
+                    'Welcome to the Matrix...',
+                    'System status: ONLINE',
+                    'Security level: MAXIMUM',
+                    'Identity verified: HACKERMAN'
+                ];
+                this.currentIndex = 0;
+                this.init();
+            }
+            
+            init() {
+                this.typeCommand();
+            }
+            
+            typeCommand() {
+                if (this.currentIndex < this.commands.length) {
+                    const command = this.commands[this.currentIndex];
+                    const line = document.createElement('div');
+                    line.style.color = '#00ff00';
+                    line.style.marginBottom = '5px';
+                    
+                    this.output.appendChild(line);
+                    
+                    this.typeText(line, command, () => {
+                        this.currentIndex++;
+                        setTimeout(() => this.typeCommand(), 1000);
+                    });
+                } else {
+                    // Loop back to beginning
+                    setTimeout(() => {
+                        this.output.innerHTML = '';
+                        this.currentIndex = 0;
+                        this.typeCommand();
+                    }, 5000);
+                }
+            }
+            
+            typeText(element, text, callback) {
+                let i = 0;
+                const typing = setInterval(() => {
+                    element.textContent += text[i];
+                    i++;
+                    if (i >= text.length) {
+                        clearInterval(typing);
+                        callback();
+                    }
+                }, 50);
+            }
         }
+
+        // Random Age Generator
+        function updateRandomAge() {
+            const ageElements = document.querySelectorAll('.typing-text');
+            const ageElement = ageElements[1]; // Second typing text is age
+            
+            setInterval(() => {
+                const randomAge = Math.floor(Math.random() * 50) + 18;
+                const currentText = ageElement.textContent;
+                if (currentText === 'int random') {
+                    ageElement.style.animation = 'none';
+                    ageElement.textContent = `${randomAge} (int random)`;
+                    setTimeout(() => {
+                        ageElement.textContent = 'int random';
+                        ageElement.style.animation = 'typing 2s steps(20, end), blink-caret 0.75s step-end infinite';
+                    }, 2000);
+                }
+            }, 5000);
+        }
+
+        // Glitch Effect Enhancement
+        function enhanceGlitch() {
+            const glitchElement = document.querySelector('.glitch');
+            
+            setInterval(() => {
+                glitchElement.style.textShadow = `
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #ff0000,
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #0000ff,
+                    0 0 20px #00ff00
+                `;
+            }, 100);
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Matrix effects
+            new BackgroundMatrix();
+            new MatrixRain('matrix-container');
+            
+            // Initialize Terminal
+            new Terminal();
+            
+            // Start random age updates
+            updateRandomAge();
+            
+            // Enhance glitch effect
+            enhanceGlitch();
+            
+            // Add some random flicker effects to cards
+            const cards = document.querySelectorAll('.info-card');
+            cards.forEach((card, index) => {
+                setInterval(() => {
+                    if (Math.random() > 0.95) {
+                        card.style.boxShadow = '0 0 50px rgba(0, 255, 0, 0.8)';
+                        setTimeout(() => {
+                            card.style.boxShadow = '0 0 30px rgba(0, 255, 0, 0.3)';
+                        }, 100);
+                    }
+                }, 1000 + index * 500);
+            });
+            
+            // Cursor blink animation
+            const cursor = document.querySelector('.cursor');
+            setInterval(() => {
+                cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+            }, 500);
+        });
+
+        // Konami Code Easter Egg
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up Up Down Down Left Right Left Right B A
+
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                // Activate super hacker mode
+                document.body.style.animation = 'glitch-skew 0.1s infinite';
+                document.querySelector('.glitch').textContent = 'MATRIX UNLOCKED';
+                
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                    document.querySelector('.glitch').textContent = 'DONTHACKME';
+                }, 3000);
+                
+                konamiCode = [];
+            }
+        });
     </script>
 </body>
 </html>
